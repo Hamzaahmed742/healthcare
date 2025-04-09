@@ -1,11 +1,30 @@
-import { Flex,Box, Stack, Text, Button, useBreakpointValue } from '@chakra-ui/react'
+import { Flex, Box, Stack, Text, Button, useBreakpointValue } from '@chakra-ui/react'
+import { useEffect, useState } from 'react';
+import { getTokenInfo } from '../utils/coinMarketCap';
 import HomeTop from '../HomeComponents/HomeTop';
 import HomeServices from '../HomeComponents/HomeService';
 import HomeDoctor from '../HomeComponents/HomeDoctor';
 import Sliding from '../HomeComponents/Sliding';
 import { HomeFAQ } from '../HomeComponents/HomeFAQ';
 
-function Home(){   
+function Home() {
+    const [priceChange, setPriceChange] = useState(null);
+    useEffect(() => {
+        const fetchBNBPrice = async () => {
+            try {
+                const data = await getTokenInfo('BNB');
+                if (data instanceof Error) {
+                    throw data;
+                }
+                console.log(data)
+                setPriceChange(data.percent_change_1h);
+            } catch (error) {
+                console.error('Error fetching BNB price:', error);
+            }
+        };
+
+        fetchBNBPrice();
+    }, []);
 
     const redirectTo = () => {
         window.location.href = '/services'; 
@@ -26,7 +45,21 @@ function Home(){
                 w="50%"
             />
             <Box>
-            <Box position="relative" height="100%">
+            <Box 
+                position="relative" 
+                height="100%"
+                _before={{
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: priceChange > 0 ? 'rgba(19, 214, 168, 0.1)' : 'rgba(255, 0, 0, 0.1)',
+                    zIndex: 2,
+                    pointerEvents: 'none'
+                }}
+            >
                 <Box>
                     <Flex>
                         <Sliding />
