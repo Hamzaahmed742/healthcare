@@ -12,6 +12,7 @@ import ServicesData from '../serviceComponents/ServicesData';
 import Home from '../Pages/Home';
 import MultiStepForm from '../serviceComponents/Pay';
 import Contact from '../Pages/Contact';
+import TokenPrice from '../Pages/TokenPrice';
 
 const AllRoutes = () => {
   return (
@@ -26,6 +27,7 @@ const AllRoutes = () => {
         <Route path='/signin' element={<SignIn />} />
         <Route path='/servicesData' element={<ServicesData />} />
         <Route path='/pay' element={<MultiStepForm/>} />
+        <Route path="/token/:symbol" element={<TokenPrice />} />
       </Routes>
     </div> 
   );
